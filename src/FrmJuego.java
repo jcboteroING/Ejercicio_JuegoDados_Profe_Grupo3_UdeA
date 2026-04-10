@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Font;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -8,6 +9,21 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class FrmJuego extends JFrame {
+
+    private Dado dado1 = new Dado(); // crear un objeto Dado para el primer dado
+    private Dado dado2 = new Dado(); // crear un objeto Dado para el segundo dado
+    private Random r = new Random(); // crear un objeto Random para generar números aleatorios 
+
+    private JLabel lblDado1; // declarar un JLabel para mostrar la imagen del primer dado
+    private JLabel lblDado2; // declarar un JLabel para mostrar la imagen del segundo dado
+    private JLabel lblLanzamientos; // declarar un JLabel para mostrar el número de lanzamientos
+    private JLabel lblCenas; // declarar un JLabel para mostrar el número de Cenas
+    
+
+    private int lanzamientos; // variable para contar el número de lanzamientos
+    private int cenas; // variable para contar el número de veces que se obtiene una "Cena
+
+
 
     // método constructor
     public FrmJuego() {
@@ -19,11 +35,11 @@ public class FrmJuego extends JFrame {
         String archivoImagen = "imagenes/3.jpg"; // ruta de la imagen
         ImageIcon imgDado = new ImageIcon(getClass().getResource(archivoImagen)); // crear el objeto ImageIcon
 
-        JLabel lblDado1 = new JLabel(imgDado); // crear un JLabel con la imagen
+        lblDado1 = new JLabel(imgDado); // crear un JLabel con la imagen
         lblDado1.setBounds(10, 10, imgDado.getIconWidth(), imgDado.getIconHeight()); // posicionar el JLabel
         add(lblDado1); // agregar el JLabel a la ventana
 
-        JLabel lblDado2 = new JLabel(imgDado); // crear un JLabel con la imagen
+        lblDado2 = new JLabel(imgDado); // crear un JLabel con la imagen
         lblDado2.setBounds(20 + imgDado.getIconWidth(), 10, imgDado.getIconWidth(), imgDado.getIconHeight()); // posicionar el JLabel a la derecha del primer dado, con un espacio de 10 píxeles entre ellos
         add(lblDado2); // agregar el JLabel a la ventana
 
@@ -32,7 +48,7 @@ public class FrmJuego extends JFrame {
         lblTituloLanzamientos.setHorizontalAlignment(JLabel.CENTER);
         add(lblTituloLanzamientos); // agregar el JLabel a la ventana
 
-        JLabel lblLanzamientos = new JLabel("0"); // crear un JLabel con el número de lanzamientos
+        lblLanzamientos = new JLabel("0"); // crear un JLabel con el número de lanzamientos
         lblLanzamientos.setBounds(30 + 2*imgDado.getIconWidth(), 45, 100, 100); // posicionar el JLabel debajo del título de lanzamientos
         lblLanzamientos.setFont(new Font("Impact", Font.BOLD, 72)); // aumentar el tamaño de la fuente del número de lanzamientos   
         lblLanzamientos.setHorizontalAlignment(JLabel.RIGHT); // centrar el número de lanzamientos horizontalmente a la derecha
@@ -46,7 +62,7 @@ public class FrmJuego extends JFrame {
         lblTituloCenas.setHorizontalAlignment(JLabel.CENTER); // centrar el texto del título de Cenas horizontalmente
         add(lblTituloCenas); // agregar el JLabel a la ventana
 
-        JLabel lblCenas = new JLabel("0"); // crear un JLabel con el número de Cenas
+        lblCenas = new JLabel("0"); // crear un JLabel con el número de Cenas
         lblCenas.setBounds(140 + 2*imgDado.getIconWidth(), 45, 100, 100); // posicionar el JLabel debajo del título de Cenas
         lblCenas.setFont(new Font("Impact", Font.BOLD, 72)); // aumentar el tamaño de la fuente del número de Cenas   
         lblCenas.setHorizontalAlignment(JLabel.RIGHT); // centrar el número de Cenas horizontalmente a la derecha
@@ -77,12 +93,35 @@ public class FrmJuego extends JFrame {
 
     private void iniciarLanzamientos() {
         // lógica para iniciar los lanzamientos
-        JOptionPane.showMessageDialog(null, "Ha hecho clic en el botón Iniciar"); // mostrar un mensaje de diálogo indicando que los lanzamientos han sido iniciados
+        lanzamientos = 0; // reiniciar el contador de lanzamientos a 0
+        lblLanzamientos.setText(String.valueOf(lanzamientos)); // actualizar el JLabel de lanzamientos con el nuevo valor
+
+        cenas = 0; // reiniciar el contador de Cenas a 0
+        lblCenas.setText(String.valueOf(cenas)); // actualizar el JLabel de Cenas con el nuevo valor
+
+
     }
 
+
+
     private void lanzarDados() {
-        // lógica para lanzar los dados
-        JOptionPane.showMessageDialog(null, "Ha hecho clic en el botón Lanzar"); // mostrar un mensaje de diálogo indicando que los dados han sido lanzados
+        dado1.lanzar(r); // lanzar el primer dado utilizando un objeto Random
+        dado2.lanzar(r); // lanzar el segundo dado utilizando un objeto
+
+        dado1.mostrarDado(lblDado1); // mostrar la imagen del primer dado en el JLabel correspondiente
+        dado2.mostrarDado(lblDado2); // mostrar la imagen del segundo dado en el JLabel correspondiente 
+
+        lanzamientos++; // incrementar el contador de lanzamientos
+        lblLanzamientos.setText(String.valueOf(lanzamientos)); // actualizar el JLabel de lanzamientos con el nuevo valor   
+
+
+        if (dado1.getNumero() + dado2.getNumero() >=11 ){
+            cenas++; // incrementar el contador de Cenas
+            lblCenas.setText(String.valueOf(cenas)); // actualizar el JLabel de Cenas con el nuevo valor
+
+        } 
+
     }
+
 
 }
